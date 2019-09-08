@@ -6,7 +6,7 @@
 #    By: kmills <kmills@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/09/04 18:35:07 by kmills            #+#    #+#              #
-#    Updated: 2019/09/05 21:00:02 by kmills           ###   ########.fr        #
+#    Updated: 2019/09/09 02:42:34 by kmills           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,7 +14,7 @@ NAME = lem_in
 MAKE = make
 override G += 
 FLAGS = -Wall -Wextra -Werror
-SRCS = main.c
+SRCS = main.c vector.c
 OBJS = $(SRCS:.c=.o)
 LIBFT = ./libft/libft.a
 all: $(NAME)

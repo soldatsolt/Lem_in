@@ -145,37 +145,73 @@ void	make_edge(t_graph *graph, char *str)
 	free(s2);
 }
 
-int		main(void)
+// int		main(void)
+// {
+	// t_graph	*graph;
+	// char	*str;
+	// int		i;
+	// int		o;
+
+	// i = 0;
+	// graph = (t_graph *)x_malloc(sizeof(t_graph));
+	// o = open("map", O_RDONLY);
+	// get_next_line(3, &str);
+	// graph->size = ft_atoi(str);
+	// free(str);
+	// allocate_graph(graph);
+	// while (get_next_line(3, &str))
+	// {
+	// 	if (i == graph->size && str[0] != '#')
+	// 	{
+	// 		make_edge(graph, str);
+	// 	}
+	// 	if (str[0] != '#' && i < graph->size)
+	// 	{
+	// 		put_str_to_table(graph, str, i);
+	// 		i++;
+	// 	}
+	// 	ft_printf("%s\n", str);
+	// 	ft_strdel(&str);
+	// }
+	// close(o);
+	// print_matr_graph(graph);
+	// free_graph(graph);
+// 	return (0);
+// }
+
+
+int main(void)
 {
-	t_graph	*graph;
-	char	*str;
-	int		i;
-	int		o;
+    int i;
 
-	i = 0;
-	graph = (t_graph *)x_malloc(sizeof(t_graph));
-	o = open("map", O_RDONLY);
-	get_next_line(3, &str);
-	graph->size = ft_atoi(str);
-	free(str);
-	allocate_graph(graph);
-	while (get_next_line(3, &str))
-	{
-		if (i == graph->size && str[0] != '#')
-		{
-			make_edge(graph, str);
-		}
-		if (str[0] != '#' && i < graph->size)
-		{
-			put_str_to_table(graph, str, i);
-			i++;
-		}
-		ft_printf("%s\n", str);
-		ft_strdel(&str);
-	}
-	close(o);
-	print_matr_graph(graph);
-	free_graph(graph);
+    t_vector v;
+    vector_init(&v);
 
-	return (0);
+    vector_add(&v, "Bonjour");
+    vector_add(&v, "tout");
+    vector_add(&v, "le");
+    vector_add(&v, "monde");
+	vector_add(&v, "monde");
+	vector_add(&v, "monde");
+	vector_add(&v, "monde");
+
+    for (i = 0; i < vector_total(&v); i++)
+        printf("%s ", (char *) vector_get(&v, i));
+    printf("\n");
+
+    vector_delete(&v, 3);
+    vector_delete(&v, 2);
+    vector_delete(&v, 1);
+
+    vector_set(&v, 0, "Hello");
+    vector_add(&v, "World");
+
+    for (i = 0; i < vector_total(&v); i++)
+        printf("%s ", (char *) vector_get(&v, i));
+    printf("\n");
+
+    vector_free(&v);
 }
+
+
+
