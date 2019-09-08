@@ -6,7 +6,7 @@
 #    By: kmills <kmills@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/09/04 18:35:07 by kmills            #+#    #+#              #
-#    Updated: 2019/09/05 16:38:12 by kmills           ###   ########.fr        #
+#    Updated: 2019/09/05 21:00:02 by kmills           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -20,10 +20,10 @@ LIBFT = ./libft/libft.a
 all: $(NAME)
 
 $(NAME):
-	@gcc ./libft/libft.a $(SRCS) -o $(NAME) ./libft/libftprintf.a
+	@gcc ./libft/libft.a $(SRCS) -g -o $(NAME) ./libft/libftprintf.a
 
 g:
-	@gcc ./libft/libft.a $(SRCS) -g -o $(NAME)
+	@gcc ./libft/libft.a $(SRCS) -g -o $(NAME) ./libft/libftprintf.a
 
 clean:
 	@$(MAKE) -C ./libft clean
