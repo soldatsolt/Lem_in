@@ -30,6 +30,7 @@ void	free_graph(t_graph *graph)
 	while (i < graph->size)
 	{
 		free(graph->matrix[i]);
+		free(graph->table[i].str);
 		i++;
 	}
 	free(graph->matrix);
@@ -88,6 +89,62 @@ void	put_str_to_table(t_graph *graph, char *str, int i)
 	free(s);
 }
 
+char	*first_node(char *str)
+{
+	char	*s;
+	int		i;
+
+	i = 0;
+	s = ft_strdup(str);
+	while (s[i] && s[i] != '-')
+	{
+		i++;
+	}
+	s[i] = '\0';
+	return (s);
+}
+
+char	*second_node(char *str)
+{
+	char	*s;
+	int		i;
+
+	i = 0;
+	while (*str != '-' && *str)
+		str++;
+	str++;
+	s = ft_strdup(str);
+	return(s);
+}
+
+int		find_i_by_str(t_graph *graph, char *str)
+{
+	int		i;
+
+	i = 0;
+	while (i < graph->size)
+	{
+		if (!ft_strcmp(graph->table[i].str, str))
+			return (i);
+		i++;
+	}
+	return (-1);
+}
+
+void	make_edge(t_graph *graph, char *str)
+{
+	char	*s1;
+	char	*s2;
+	int		i;
+
+	s1 = first_node(str);
+	s2 = second_node(str);
+	graph->matrix[find_i_by_str(graph, s1)][find_i_by_str(graph, s2)] = 1;
+	graph->matrix[find_i_by_str(graph, s2)][find_i_by_str(graph, s1)] = 1;
+	free(s1);
+	free(s2);
+}
+
 int		main(void)
 {
 	t_graph	*graph;
@@ -104,6 +161,10 @@ int		main(void)
 	allocate_graph(graph);
 	while (get_next_line(3, &str))
 	{
+		if (i == graph->size && str[0] != '#')
+		{
+			make_edge(graph, str);
+		}
 		if (str[0] != '#' && i < graph->size)
 		{
 			put_str_to_table(graph, str, i);
