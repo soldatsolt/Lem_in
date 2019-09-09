@@ -16,7 +16,7 @@ static void	vector_resize(t_vector *v, int capacity)
 {
 	void **items;
 
-	items = realloc(v->items, sizeof(void *) * capacity);
+	items = ft_realloc(v->items, sizeof(void *) * capacity);
 	if (items)
 	{
 		v->items = items;

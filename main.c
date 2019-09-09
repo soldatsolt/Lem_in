@@ -147,35 +147,35 @@ void	make_edge(t_graph *graph, char *str)
 
 // int		main(void)
 // {
-	// t_graph	*graph;
-	// char	*str;
-	// int		i;
-	// int		o;
+// 	t_graph	*graph;
+// 	char	*str;
+// 	int		i;
+// 	int		o;
 
-	// i = 0;
-	// graph = (t_graph *)x_malloc(sizeof(t_graph));
-	// o = open("map", O_RDONLY);
-	// get_next_line(3, &str);
-	// graph->size = ft_atoi(str);
-	// free(str);
-	// allocate_graph(graph);
-	// while (get_next_line(3, &str))
-	// {
-	// 	if (i == graph->size && str[0] != '#')
-	// 	{
-	// 		make_edge(graph, str);
-	// 	}
-	// 	if (str[0] != '#' && i < graph->size)
-	// 	{
-	// 		put_str_to_table(graph, str, i);
-	// 		i++;
-	// 	}
-	// 	ft_printf("%s\n", str);
-	// 	ft_strdel(&str);
-	// }
-	// close(o);
-	// print_matr_graph(graph);
-	// free_graph(graph);
+// 	i = 0;
+// 	graph = (t_graph *)x_malloc(sizeof(t_graph));
+// 	o = open("map", O_RDONLY);
+// 	get_next_line(3, &str);
+// 	graph->size = ft_atoi(str);
+// 	free(str);
+// 	allocate_graph(graph);
+// 	while (get_next_line(3, &str))
+// 	{
+// 		if (i == graph->size && str[0] != '#')
+// 		{
+// 			make_edge(graph, str);
+// 		}
+// 		if (str[0] != '#' && i < graph->size)
+// 		{
+// 			put_str_to_table(graph, str, i);
+// 			i++;
+// 		}
+// 		ft_printf("%s\n", str);
+// 		ft_strdel(&str);
+// 	}
+// 	close(o);
+// 	print_matr_graph(graph);
+// 	free_graph(graph);
 // 	return (0);
 // }
 
@@ -212,6 +212,4 @@ int main(void)
 
     vector_free(&v);
 }
-
-
 
