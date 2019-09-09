@@ -4,7 +4,7 @@ void		vector_init(t_vector *v)
 {
 	v->capacity = VECTOR_INIT_CAPACITY;
 	v->total = 0;
-	v->items = malloc(sizeof(void *) * v->capacity);
+	v->items = x_malloc(sizeof(void *) * v->capacity);
 }
 
 int			vector_total(t_vector *v)

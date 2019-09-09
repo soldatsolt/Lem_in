@@ -12,6 +12,13 @@
 #define VECTOR_TOTAL(vec) vector_total(&vec)
 #define VECTOR_FREE(vec) vector_free(&vec)
 
+typedef struct	s_vector
+{
+	void		**items;
+	int			capacity;
+	int			total;
+}				t_vector;
+
 typedef	struct	s_table
 {
 	int			k;
@@ -22,17 +29,11 @@ typedef	struct	s_graph
 {
 	int			size;
 	int			n;
+	int			start;
+	int			end;
 	int			**matrix;
 	t_table		*table;
 }				t_graph;
-
-
-typedef struct	s_vector
-{
-	void		**items;
-	int			capacity;
-	int			total;
-}				t_vector;
 
 void			vector_init(t_vector *);
 int				vector_total(t_vector *);

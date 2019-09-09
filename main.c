@@ -27,7 +27,7 @@ void	free_graph(t_graph *graph)
 	int	i;
 
 	i = 0;
-	while (i < graph->size)
+	while (i < 4096)
 	{
 		free(graph->matrix[i]);
 		free(graph->table[i].str);
@@ -72,6 +72,7 @@ char	*first_word_of_str(char *str)
 	char	*s;
 	int		i;
 
+	i = 0;
 	s = ft_strdup(str);
 	while (s[i] && s[i] != ' ' && s[i] != '\t')
 		i++;
@@ -145,71 +146,94 @@ void	make_edge(t_graph *graph, char *str)
 	free(s2);
 }
 
-// int		main(void)
-// {
-// 	t_graph	*graph;
-// 	char	*str;
-// 	int		i;
-// 	int		o;
-
-// 	i = 0;
-// 	graph = (t_graph *)x_malloc(sizeof(t_graph));
-// 	o = open("map", O_RDONLY);
-// 	get_next_line(3, &str);
-// 	graph->size = ft_atoi(str);
-// 	free(str);
-// 	allocate_graph(graph);
-// 	while (get_next_line(3, &str))
-// 	{
-// 		if (i == graph->size && str[0] != '#')
-// 		{
-// 			make_edge(graph, str);
-// 		}
-// 		if (str[0] != '#' && i < graph->size)
-// 		{
-// 			put_str_to_table(graph, str, i);
-// 			i++;
-// 		}
-// 		ft_printf("%s\n", str);
-// 		ft_strdel(&str);
-// 	}
-// 	close(o);
-// 	print_matr_graph(graph);
-// 	free_graph(graph);
-// 	return (0);
-// }
-
-
-int main(void)
+int		is_str_is_edge(char *str)
 {
-    int i;
+	int	i;
 
-    t_vector v;
-    vector_init(&v);
-
-    vector_add(&v, "Bonjour");
-    vector_add(&v, "tout");
-    vector_add(&v, "le");
-    vector_add(&v, "monde");
-	vector_add(&v, "monde");
-	vector_add(&v, "monde");
-	vector_add(&v, "monde");
-
-    for (i = 0; i < vector_total(&v); i++)
-        printf("%s ", (char *) vector_get(&v, i));
-    printf("\n");
-
-    vector_delete(&v, 3);
-    vector_delete(&v, 2);
-    vector_delete(&v, 1);
-
-    vector_set(&v, 0, "Hello");
-    vector_add(&v, "World");
-
-    for (i = 0; i < vector_total(&v); i++)
-        printf("%s ", (char *) vector_get(&v, i));
-    printf("\n");
-
-    vector_free(&v);
+	i = 0;
+	if (str[0] == '#')
+		return (0);
+	while (str[i])
+	{
+		if (str[i] == ' ' || str[i] == '\t')
+			return (0);
+		i++;
+	}
+	return (1);
 }
 
+void	parse_start(t_graph *graph, char *str, int *ii)
+{
+	ft_printf("%s\n", str);
+	ft_strdel(&str);
+	get_next_line(3, &str);
+	graph->start = *ii;
+	put_str_to_table(graph, str, *ii);
+	ft_printf("%s\n", str);
+	ft_strdel(&str);
+	(*ii)++;
+}
+
+void	parse_end(t_graph *graph, char *str, int *ii)
+{
+	ft_printf("%s\n", str);
+	ft_strdel(&str);
+	get_next_line(3, &str);
+	graph->end = *ii;
+	put_str_to_table(graph, str, *ii);
+	ft_printf("%s\n", str);
+	ft_strdel(&str);
+	(*ii)++;
+}
+
+void	parse_str(t_graph *graph, char *str)
+{
+	static int	i = 0;
+	int			ii;
+
+	ii = i;
+	if (is_str_is_edge(str))
+	{
+		make_edge(graph, str);
+		graph->size = i;
+	}
+	if (str[0] != '#' && i < graph->size)
+	{
+		put_str_to_table(graph, str, i);
+		i++;
+		ii++;
+	}
+	if (!ft_strcmp(str, "##start"))
+		parse_start(graph, str, &(ii));
+	else if (!ft_strcmp(str, "##end"))
+		parse_end(graph, str, &(ii));
+	else
+	{
+		ft_printf("%s\n", str);
+		ft_strdel(&str);
+	}
+	i = ii;
+}
+
+int		main(void)
+{
+	t_graph	*graph;
+	char	*str;
+	int		o;
+
+	graph = (t_graph *)x_malloc(sizeof(t_graph));
+	o = open("map", O_RDONLY);
+	get_next_line(3, &str);
+	graph->n = ft_atoi(str);
+	graph->size = 4096;
+	free(str);
+	allocate_graph(graph);
+	while (get_next_line(3, &str))
+	{
+		parse_str(graph, str);
+	}
+	close(o);
+	print_matr_graph(graph);
+	free_graph(graph);
+	return (0);
+}
