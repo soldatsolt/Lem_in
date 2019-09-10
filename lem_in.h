@@ -32,6 +32,9 @@ typedef	struct	s_graph
 	int			start;
 	int			end;
 	int			**matrix;
+	int			*mark;
+	int			*prior;
+	int			**edges;
 	t_table		*table;
 }				t_graph;
 

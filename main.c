@@ -8,9 +8,14 @@ void	allocate_graph(t_graph *graph)
 	j = 0;
 	i = 0;
 	graph->matrix = (int **)x_malloc(sizeof(int *) * graph->size);
+	graph->edges = (int **)x_malloc(sizeof(int *) * graph->size);
+	graph->mark = (int *)x_malloc(sizeof(int) * graph->size);
+	graph->prior = (int *)x_malloc(sizeof(int) * graph->size);
 	graph->table = (t_table *)x_malloc(sizeof(t_table) * graph->size);
 	while (i < graph->size)
 	{
+		graph->mark[i] = 0;
+		graph->prior[i] = 0;
 		graph->matrix[i] = (int *)x_malloc(sizeof(int) * graph->size);
 		while (j < graph->size)
 		{
@@ -29,12 +34,17 @@ void	free_graph(t_graph *graph)
 	i = 0;
 	while (i < 4096)
 	{
+		if (i < graph->size)
+			free(graph->edges[i]);
 		free(graph->matrix[i]);
 		free(graph->table[i].str);
 		i++;
 	}
+	free(graph->edges);
 	free(graph->matrix);
 	free(graph->table);
+	free(graph->prior);
+	free(graph->mark);
 	free(graph);
 }
 
@@ -215,6 +225,111 @@ void	parse_str(t_graph *graph, char *str)
 	i = ii;
 }
 
+void	make_matrix_great_agagin(t_graph *graph)
+{
+	int	i;
+	int	j;
+
+	j = 0;
+	i = 0;
+	while (i < graph->size)
+	{
+		while (j < graph->size)
+		{
+			if (graph->matrix[i][j])
+				graph->matrix[i][j] = 1;
+			j++;
+		}
+		j = 0;
+		i++;
+	}
+}
+
+int		q_edges_from_node(t_graph *graph, int node)
+{
+	int	i;
+	int	q;
+
+	q = 0;
+	i = 0;
+	while (i < graph->size)
+	{
+		if (graph->matrix[node][i])
+			q++;
+		i++;
+	}
+	return (q);
+}
+
+
+
+// void	dfs(t_graph *graph, int v, int from)
+// {
+//     if (graph->mark[v] != 0)  // Если мы здесь уже были, то тут больше делать нечего
+//     {
+//         return ;
+//     }
+//     graph->mark[v] = 1;   // Помечаем, что мы здесь были
+//     graph->prior[v] = from;  // Запоминаем, откуда пришли
+//     if (v == finish)   // Проверяем, конец ли
+//     {
+//         ft_putstr("Hooray! The path was found!\n");
+//         return;
+//     }
+//     for (int i = 0; i < (int)edges[v].size(); ++i)  // Для каждого ребра
+//     {
+//         DFS(edges[v][i], v);  // Запускаемся из соседа
+//     }
+// }
+
+void	make_graph_edges(t_graph *graph)
+{
+	int	i;
+	int	j;
+	int	k;
+
+	k = 0;
+	j = 0;
+	i = 0;
+	while (i < graph->size)
+	{
+		graph->edges[i] = (int *)x_malloc(sizeof(int) * q_edges_from_node(graph, i));
+		while (k < q_edges_from_node(graph, i))
+		{
+			if (graph->matrix[i][j])
+			{
+				graph->edges[i][k] = j;
+				k++;
+			}
+			j++;
+		}
+		k = 0;
+		j = 0;
+		i++;
+	}
+}
+
+void	print_graph_edges(t_graph *graph)
+{
+	int	i;
+	int	j;
+
+	i = 0;
+	j = 0;
+	while (i < graph->size)
+	{
+		ft_printf("The %s has edges with: ", graph->table[i].str);
+		while (j < q_edges_from_node(graph, i))
+		{
+			ft_printf("%s ", graph->table[graph->edges[i][j]].str);
+			j++;
+		}
+		write(1, "\n", 1);
+		j = 0;
+		i++;
+	}
+}
+
 int		main(void)
 {
 	t_graph	*graph;
@@ -229,11 +344,12 @@ int		main(void)
 	free(str);
 	allocate_graph(graph);
 	while (get_next_line(3, &str))
-	{
 		parse_str(graph, str);
-	}
 	close(o);
+	make_graph_edges(graph);
 	print_matr_graph(graph);
+	print_graph_edges(graph);
+	// dfs(graph, graph->start, graph->start);
 	free_graph(graph);
 	return (0);
 }
